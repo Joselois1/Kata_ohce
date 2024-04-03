@@ -8,8 +8,7 @@ def ohce():
     return Ohce()
 
 def test_saludo_buenas_noches(ohce, monkeypatch):
-    with monkeypatch.context() as m:
-        m.setattr("builtins.input", lambda: "ohce Juan")
+        monkeypatch.setattr("builtins.input", lambda: "ohce Juan")
         monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 21)
         stdout = StringIO()
         with redirect_stdout(stdout):
@@ -18,16 +17,20 @@ def test_saludo_buenas_noches(ohce, monkeypatch):
 
 
 def test_saludo_buenos_dias(ohce, monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda: "ohce Maria")
     monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 8)
-    ohce.name = "Maria"
-    #ohce.start("ohce Maria")
-    assert ohce.response == "¡Buenos días Maria!"
+    stdout = StringIO()
+    with redirect_stdout(stdout):
+            ohce.start()
+    assert stdout.getvalue().strip() == "¡Buenos días Maria!"
 
 def test_saludo_buenas_tardes(ohce, monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda: "ohce Pedro")
     monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 15)
-    ohce.name = "Pedro"
-    #ohce.start("ohce Pedro")
-    assert ohce.response == "¡Buenas tardes Pedro!"
+    stdout = StringIO()
+    with redirect_stdout(stdout):
+            ohce.start()
+    assert stdout.getvalue().strip() == "¡Buenas tardes Pedro!"
 
 def test_reverse_string(ohce):
     assert ohce.reverse_string("hola") == "aloh"
