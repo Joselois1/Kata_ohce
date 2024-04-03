@@ -37,7 +37,7 @@ class Ohce:
             return "Adios {}!".format(self.name)
             
         elif self.is_palindrome(text):
-            return "{}  ¡Bonita palabra!".format(self.reverse_string(text))
+            return "{} ¡Bonita palabra!".format(self.reverse_string(text))
         else:
             return self.reverse_string(text)
 
