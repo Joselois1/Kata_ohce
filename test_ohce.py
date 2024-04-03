@@ -1,4 +1,6 @@
 import pytest
+from io import StringIO
+from contextlib import redirect_stdout
 from ohce import Ohce
 
 @pytest.fixture
@@ -6,20 +8,24 @@ def ohce():
     return Ohce()
 
 def test_saludo_buenas_noches(ohce, monkeypatch):
-    monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 1)
-    #ohce.name = "Juan"
-    #ohce.start("ohce Juan")
-    assert ohce.response == "¡Buenas noches Juan!"
+    with monkeypatch.context() as m:
+        m.setattr("builtins.input", lambda: "ohce Juan")
+        monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 21)
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            ohce.start()
+        assert stdout.getvalue().strip() == "¡Buenas noches Juan!"
+
 
 def test_saludo_buenos_dias(ohce, monkeypatch):
     monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 8)
-    #ohce.name = "Maria"
+    ohce.name = "Maria"
     #ohce.start("ohce Maria")
     assert ohce.response == "¡Buenos días Maria!"
 
 def test_saludo_buenas_tardes(ohce, monkeypatch):
     monkeypatch.setattr("ohce.Ohce.get_hora_actual", lambda self: 15)
-    #ohce.name = "Pedro"
+    ohce.name = "Pedro"
     #ohce.start("ohce Pedro")
     assert ohce.response == "¡Buenas tardes Pedro!"
 
