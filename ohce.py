@@ -1,7 +1,13 @@
+import time
+
 class Ohce:
     name = ""
     def __init__(self):
         pass
+
+    def get_hora_actual(self):
+        hora_actual = int(time.strftime("%H"))
+        return hora_actual
 
     def start(self):  #Input de nombre comenzando con ohce
         while True:
@@ -16,10 +22,6 @@ class Ohce:
                 else:
                     print("¡Buenas tardes {}!".format(self.name))
                 break
-
-    def get_hora_actual(self):
-        
-        return 21 
 
     def reverse_string(self, text): #Revierte el string 
         text_rev = ""
